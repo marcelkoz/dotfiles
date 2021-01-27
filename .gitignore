@@ -1,0 +1,22 @@
+# ignore everything
+*
+
+# except...
+!.gitignore
+
+# rc files
+!.bashrc
+!.vimrc
+!.zsh*
+
+!.inputrc
+!.sh_aliases
+
+# .config
+!.config/
+.config/*
+!.config/kitty/
+
+# kitty
+!.config/kitty/kitty.conf
+
