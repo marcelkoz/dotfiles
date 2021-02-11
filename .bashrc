@@ -10,7 +10,7 @@
 #
 
 # ignore duplicate history entries
-HISTCONTROL=ignoredups
+HISTCONTROL=ignoreboth
 
 # history size
 HISTFILESIZE=2000
