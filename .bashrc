@@ -98,6 +98,12 @@ source_file '/usr/share/bash-completion/bash_completion'
 # enable extended globs
 shopt -s extglob
 
+# include dot files in globs
+shopt -s dotglob
+
+# convert a glob that evaluated to nothing to an empty string
+shopt -s nullglob
+
 # check for terminal resize after every command
 shopt -s checkwinsize
 
