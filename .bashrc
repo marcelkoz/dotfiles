@@ -59,3 +59,7 @@ shopt -s checkwinsize
 # prepends cd to a file path
 shopt -s autocd
 
+# enable bash completion
+bash_comp_path='/usr/share/bash-completion/bash_completion' 
+[ -f "$bash_comp_path" ] && source $bash_comp_path
+
