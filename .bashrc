@@ -29,7 +29,7 @@ bold=$(tput bold)
 # $1 = warning message to the user
 warn_user()
 {
-    echo "$red[Warning]$reset $1"
+    echo "$red[Warning]$reset $1" >&2
 }
 
 # $1 = path to file
