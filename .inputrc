@@ -1,2 +1,5 @@
-set completion-ignore-case On
+#
+# Custom ~/.inputrc
+#
 
+set completion-ignore-case On
