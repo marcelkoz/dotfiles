@@ -7,19 +7,13 @@
 # rc files
 !.bashrc
 !.vimrc
-!.zsh*
+!.zshrc
 
 !.inputrc
 !.sh_aliases
-
-# .config
-!.config/
-.config/*
-!.config/kitty/
 
 # kitty
 !.config/kitty/kitty.conf
 
 # misc
 !.sym_links.py
-
