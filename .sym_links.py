@@ -6,24 +6,25 @@ from pathlib import Path
 import os
 
 # path variables
-source      = '~/Repos/dotfiles'
-config_dest = '~/.config'
-config_src  = f'{source}/.config'
+user_home   = str(Path.home())
+source      = str(Path.home()  / 'Repos/dotfiles')
+config_dest = str(Path.home()  / '.config')
+config_src  = str(Path(source) / '.config')
 
 # rc files
 # [source, destination]
 rc_files = [
-    [f'{source}/.bashrc',  '~'],
-    [f'{source}/.zshrc',   '~'],
-    [f'{source}/.vimrc',   '~'],
-    [f'{source}/.inputrc', '~'],
+    [f'{source}/.bashrc',  user_home],
+    [f'{source}/.zshrc',   user_home],
+    [f'{source}/.vimrc',   user_home],
+    [f'{source}/.inputrc', user_home],
 ]
 
 # config files
 # [source, destination]
 config_files = [
-    [f'{config_src}/kitty/kitty.conf', f'{config_dest}/kitty/kitty.conf'],
-    [f'{source}/.sh_aliases', '~'],
+    [f'{config_src}/kitty/kitty.conf', f'{config_dest}/kitty'],
+    [f'{source}/.sh_aliases',          user_home],
 ]
 
 def make_symlinks(files):
@@ -33,14 +34,14 @@ def make_symlinks(files):
         file_name = src_path.name
 
         # ensure destination directories exist
-        if pair[1] != '~':
+        if pair[1] != user_home:
             print('Ensuring {0} has a valid symlink destination...'.format(pair[1]))
             path = str(dest_path.parent.resolve())
             os.makedirs(path, exist_ok=True)
 
         # replace existing file with symlink
         new_dest_path = dest_path / file_name
-        if (new_dest_path).exists():
+        if new_dest_path.exists():
             print('Path {0} already exists, removing file...'.format(new_dest_path))
             os.remove(new_dest_path)
 
