@@ -20,3 +20,6 @@
 # kitty
 !.config/kitty/kitty.conf
 
+# misc
+!.sym_links.py
+
