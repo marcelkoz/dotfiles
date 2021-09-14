@@ -5,8 +5,13 @@
 from pathlib import Path
 import os
 
+# safe mode
+# any duplicate files will be moved to a special .sym_links_duplicates directory instead of being deleted
+safe_mode = True
+
 # path variables
 user_home   = str(Path.home())
+dup_dest    = str(Path.home()  / '.sym_links_duplicates')
 source      = str(Path.home()  / 'Repos/dotfiles')
 config_dest = str(Path.home()  / '.config')
 config_src  = str(Path(source) / '.config')
@@ -42,13 +47,20 @@ def make_symlinks(files):
         # replace existing file with symlink
         new_dest_path = dest_path / file_name
         if new_dest_path.exists():
-            print('  ({0}) already exists, removing file...'.format(new_dest_path))
-            os.remove(new_dest_path)
+            if safe_mode:
+                print('  ({0}) already exists, moving file...'.format(new_dest_path))
+                os.rename(new_dest_path, Path(dup_dest) / file_name)
+            else:
+                print('  ({0}) already exists, removing file...'.format(new_dest_path))
+                os.remove(new_dest_path)
 
         os.symlink(src_path, new_dest_path)
         print('  Created symlink ({0}) -> ({1})'.format(src_path, new_dest_path))
 
 def main():
+    if safe_mode:
+        os.makedirs(dup_dest, exist_ok=True)
+
     print('Creating rc file symlinks...')
     make_symlinks(rc_files)
     print('Finished creating rc file symlinks.', end='\n\n')
