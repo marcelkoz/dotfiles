@@ -36,7 +36,7 @@ def make_symlinks(files):
         # ensure destination directories exist
         if pair[1] != user_home:
             print('  Ensuring ({0}) has a valid symlink destination...'.format(pair[1]))
-            path = str(dest_path.parent.resolve())
+            path = dest_path.parent.resolve()
             os.makedirs(path, exist_ok=True)
 
         # replace existing file with symlink
