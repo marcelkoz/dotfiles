@@ -14,17 +14,17 @@ config_src  = str(Path(source) / '.config')
 # rc files
 # [source, destination]
 rc_files = [
-    [f'{source}/.bashrc',  user_home],
-    [f'{source}/.zshrc',   user_home],
-    [f'{source}/.vimrc',   user_home],
-    [f'{source}/.inputrc', user_home],
+    (f'{source}/.bashrc',  user_home),
+    (f'{source}/.zshrc',   user_home),
+    (f'{source}/.vimrc',   user_home),
+    (f'{source}/.inputrc', user_home),
 ]
 
 # config files
 # [source, destination]
 config_files = [
-    [f'{config_src}/kitty/kitty.conf', f'{config_dest}/kitty'],
-    [f'{source}/.sh_aliases',          user_home],
+    (f'{config_src}/kitty/kitty.conf', f'{config_dest}/kitty'),
+    (f'{source}/.sh_aliases',          user_home),
 ]
 
 def make_symlinks(files):
