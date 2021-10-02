@@ -10,11 +10,11 @@ import os
 safe_mode = True
 
 # path variables
-user_home   = str(Path.home())
-dup_dest    = str(Path.home()  / '.sym_links_duplicates')
-source      = str(Path.home()  / 'Repos/dotfiles')
-config_dest = str(Path.home()  / '.config')
-config_src  = str(Path(source) / '.config')
+user_home   = Path.home()
+dup_dest    = user_home / '.sym_links_duplicates'
+source      = user_home / 'Repos/dotfiles'
+config_dest = user_home / '.config'
+config_src  = source    / '.config'
 
 # rc files
 # [source, destination]
@@ -49,7 +49,7 @@ def make_symlinks(files):
         if new_dest_path.exists():
             if safe_mode:
                 print('  ({0}) already exists, moving file...'.format(new_dest_path))
-                os.rename(new_dest_path, Path(dup_dest) / file_name)
+                os.rename(new_dest_path, dup_dest / file_name)
             else:
                 print('  ({0}) already exists, removing file...'.format(new_dest_path))
                 os.remove(new_dest_path)
