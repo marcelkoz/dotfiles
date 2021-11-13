@@ -22,7 +22,7 @@ config_src  = source    / '.config'
 # (source, destination)
 rc_files = (
     (f'{source}/.bashrc',  user_home),
-    (f'{source}/.zshrc',   user_home),
+    (f'{source}/.zshr',   user_home),
     (f'{source}/.vimrc',   user_home),
     (f'{source}/.inputrc', user_home),
 )
@@ -33,6 +33,11 @@ config_files = (
     (f'{config_src}/kitty/kitty.conf', f'{config_dest}/kitty'),
     (f'{source}/.sh_aliases',          user_home),
 )
+
+class InvalidPairError(Exception):
+    def __init__(self, reason, pair):
+        super().__init__(reason)
+        self.pair = pair
 
 def make_symlinks(files):
     for pair in files:
@@ -61,24 +66,16 @@ def make_symlinks(files):
 
 def verify_symlinks(files):
     for pair in files:
-        valid = True
         if len(pair) != 2:
-            valid = False
+            raise InvalidPairError('not enough or too many items', pair)
         elif not all(map(lambda f: Path(f).exists(), pair)):
-            valid = False
-
-        if not valid:
-            return pair
+            raise InvalidPairError('not all locations exist', pair)
 
         print(indent, f'Verified ({pair[0]}) -> ({pair[1]})')
 
-    return None
-
 def make_files(file_type, files):
     print(f'Verifying {file_type} file symlinks...')
-    result = verify_symlinks(files)
-    if result != None:
-        raise Exception(f'{indent}Failed to verify a pair')
+    verify_symlinks(files)
     print(f'Finished verifying {file_type} file symlinks.', end='\n\n')
 
     print(f'Creating {file_type} file symlinks...')
@@ -89,8 +86,11 @@ def main():
     if safe_mode:
         os.makedirs(dup_dest, exist_ok=True)
 
-    make_files('rc',     rc_files)
-    make_files('config', config_files)
+    try:
+        make_files('rc',     rc_files)
+        make_files('config', config_files)
+    except InvalidPairError as err:
+        print(indent, f'Failed to verify pair, {err}: {err.pair}') 
 
 if __name__ == '__main__':
     main()
