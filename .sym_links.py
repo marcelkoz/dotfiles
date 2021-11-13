@@ -22,7 +22,7 @@ config_src  = source    / '.config'
 # (source, destination)
 rc_files = (
     (f'{source}/.bashrc',  user_home),
-    (f'{source}/.zshr',   user_home),
+    (f'{source}/.zshrc',   user_home),
     (f'{source}/.vimrc',   user_home),
     (f'{source}/.inputrc', user_home),
 )
