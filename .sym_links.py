@@ -6,9 +6,9 @@ from pathlib import Path
 import os
 
 # safe mode
-# any duplicate files will be moved to a special .sym_links_duplicates directory instead of being deleted
 safe_mode = True
 
+# indentation level
 indent = '  '
 
 # path variables
