@@ -73,7 +73,7 @@ def verify_symlinks(files):
 
         print(indent, f'Verified ({pair[0]}) -> ({pair[1]})')
 
-def make_files(file_type, files):
+def link_files(file_type, files):
     print(f'Verifying {file_type} file symlinks...')
     verify_symlinks(files)
     print(f'Finished verifying {file_type} file symlinks.', end='\n\n')
@@ -87,8 +87,8 @@ def main():
         os.makedirs(dup_dest, exist_ok=True)
 
     try:
-        make_files('rc',     rc_files)
-        make_files('config', config_files)
+        link_files('rc',     rc_files)
+        link_files('config', config_files)
     except InvalidPairError as err:
         print(indent, f'Failed to verify pair, {err}: {err.pair}') 
 
