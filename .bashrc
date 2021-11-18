@@ -26,14 +26,14 @@ bold=$(tput bold)
 # Helper Functions
 #
 
-# $1 = warning message to the user
+# $1: warning message to the user
 warn_user()
 {
     echo "$red[Warning]$reset $1" >&2
 }
 
-# $1 = path to file
-# return value = success of sourcing file
+# $1: path to file
+# returns success of sourcing file
 source_file()
 {
     if [ -f "$1" ]
@@ -42,7 +42,7 @@ source_file()
         return 0
     fi
     
-    warn_user "Could not find or source file '$1'"
+    warn_user "Could not find file ($1)"
     return 1
 }
 
@@ -107,6 +107,5 @@ shopt -s nullglob
 # check for terminal resize after every command
 shopt -s checkwinsize
 
-# prepends cd to a file path
+# prepend cd to a file path
 shopt -s autocd
-
