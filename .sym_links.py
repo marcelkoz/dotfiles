@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 #
 # ~/.sym_links.py
 #
@@ -17,6 +18,8 @@ dup_dest    = user_home / '.sym_links_duplicates'
 source      = user_home / 'Repos/dotfiles'
 config_dest = user_home / '.config'
 config_src  = source    / '.config'
+bin_dest    = user_home / '.bin'
+bin_src     = source    / '.bin'
 
 # rc files
 # (source, destination)
@@ -32,6 +35,12 @@ rc_files = (
 config_files = (
     (f'{config_src}/kitty/kitty.conf', f'{config_dest}/kitty'),
     (f'{source}/.sh_aliases',          user_home),
+)
+
+# bin files
+# (source, destination)
+bin_files = (
+    (f'{bin_src}/trash', bin_dest),
 )
 
 class InvalidPairError(Exception):
@@ -68,8 +77,8 @@ def verify_symlinks(files):
     for pair in files:
         if len(pair) != 2:
             raise InvalidPairError('not enough or too many items', pair)
-        elif not all(map(lambda f: Path(f).exists(), pair)):
-            raise InvalidPairError('not all locations exist', pair)
+        elif not Path(pair[0]).exists():
+            raise InvalidPairError('source location does not exist', pair)
 
         print(indent, f'Verified ({pair[0]}) -> ({pair[1]})')
 
@@ -89,6 +98,7 @@ def main():
     try:
         link_files('rc',     rc_files)
         link_files('config', config_files)
+        link_files('bin',    bin_files)
     except InvalidPairError as err:
         print(indent, f'Failed to verify pair, {err}: {err.pair}') 
 

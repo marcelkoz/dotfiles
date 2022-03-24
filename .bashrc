@@ -89,6 +89,9 @@ shopt -s histappend
 # Misc
 #
 
+# add user .bin to path
+export PATH="$HOME/.bin:$PATH"
+
 # load command aliases
 source_file "$HOME/.sh_aliases"
 
