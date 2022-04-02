@@ -47,11 +47,29 @@ source_file()
 }
 
 #
-# Prompt & Less
+# Prompt
 #
 
-PS1="\[$green\]\u\[$reset\]@\[$green\]\h\[$reset\] \[$bold\]\[$cyan\]\w\[$reset\] \n\$ "
+# function for creating PS1
+PROMPT_COMMAND=__create_prompt
+__create_prompt() {
+    local exit_code="$?"
+    local header="\[$green\]\u\[$reset\]@\[$green\]\h\[$reset\] \[$bold\]\[$cyan\]\w\[$reset\]"
+    local prompt='$ '
+
+    if [ $exit_code != 0 ]
+    then
+        prompt="$red!$reset\$ "
+    fi
+
+    PS1="$header\n$prompt"
+}
+
 PS2='> '
+
+#
+# Less & Man Pages
+#
 
 # coloured less and man pages
 # begin bold
