@@ -5,6 +5,8 @@
 # set colour for common commands
 alias grep='grep --color=auto'
 alias ls='ls --color=auto'
+alias ip='ip --color=auto'
+alias diff='diff --color=auto'
 
 alias sl='ls'
 alias ll='ls -lFA'
@@ -12,4 +14,3 @@ alias la='ls -A'
 alias l='ls'
 
 alias svim='sudo vim'
-
