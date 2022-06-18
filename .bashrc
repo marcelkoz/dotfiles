@@ -9,18 +9,21 @@
 # Colours
 #
 
-magenta=$(tput setaf 5)
-yellow=$(tput setaf 3)
-black=$(tput setaf 0)
-green=$(tput setaf 2)
-white=$(tput setaf 7)
-blue=$(tput setaf 4)
-cyan=$(tput setaf 6)
-red=$(tput setaf 1)
+if [[ $TERM ]]
+then
+    magenta=$(tput setaf 5)
+    yellow=$(tput setaf 3)
+    black=$(tput setaf 0)
+    green=$(tput setaf 2)
+    white=$(tput setaf 7)
+    blue=$(tput setaf 4)
+    cyan=$(tput setaf 6)
+    red=$(tput setaf 1)
 
-# modifiers
-reset=$(tput sgr0)
-bold=$(tput bold)
+    # modifiers
+    reset=$(tput sgr0)
+    bold=$(tput bold)
+fi
 
 #
 # Helper Functions
