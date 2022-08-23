@@ -68,11 +68,11 @@ def create_destination_parent(pair: FilePair):
         os.makedirs(parent, exist_ok=True)
 
 def replace_destination_file(file_path: Path):
+    print(indent, '({0}) already exists, {1}moving file...'.format(file_path, '' if safe_mode else 're'))
+
     if safe_mode:
-        print(indent, '({0}) already exists, moving file...'.format(file_path))
-        os.rename(file_path, dup_dest / file_path.name)
+        os.rename(file_path, dup_dest / file_path.name)s
     else:
-        print(indent, '({0}) already exists, removing file...'.format(file_path))
         os.remove(file_path)
 
 def create_symlinks(pairs: typing.List[FilePair]):
