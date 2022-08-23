@@ -5,6 +5,19 @@
 
 from pathlib import Path
 import os
+import typing
+
+class FilePair:
+    def __init__(self, source, destination):
+        self.source      = Path(source)
+        self.destination = Path(destination)
+
+    def verify(self):
+        if not Path(source).exists():
+            raise InvalidPairError('source location does not exist', self)
+
+    def __str__(self):
+        return f'FilePair {{ Source: ({self.source}) Destination: ({self.destination}) }}'
 
 # safe mode
 safe_mode = True
@@ -24,34 +37,29 @@ bin_src     = source    / '.bin'
 # rc files
 # (source, destination)
 rc_files = (
-    (source / '.bashrc',  user_home),
-    (source / '.zshrc',   user_home),
-    (source / '.vimrc',   user_home),
-    (source / '.inputrc', user_home),
+    FilePair(source / '.bashrc',  user_home),
+    FilePair(source / '.zshrc',   user_home),
+    FilePair(source / '.vimrc',   user_home),
+    FilePair(source / '.inputrc', user_home),
 )
 
 # config files
 # (source, destination)
 config_files = (
-    (config_src / 'kitty/kitty.conf', config_dest / 'kitty'),
-    (source / '.sh_aliases',          user_home),
+    FilePair(config_src / 'kitty/kitty.conf', config_dest / 'kitty'),
+    FilePair(source / '.sh_aliases',          user_home),
 )
 
 # bin files
 # (source, destination)
 bin_files = (
-    (bin_src / 'trash', bin_dest),
+    FilePair(bin_src / 'trash', bin_dest),
 )
 
 class InvalidPairError(Exception):
     def __init__(self, reason, pair):
         super().__init__(reason)
         self.pair = pair
-
-class FilePair:
-    def __init__(self, source, destination):
-        self.source      = Path(source)
-        self.destination = Path(destination)
 
 def create_destination_parent(pair: FilePair):
     print(indent, 'Ensuring ({0}) has a valid symlink destination...'.format(pair.destination))
@@ -67,10 +75,8 @@ def replace_destination_file(file_path: Path):
         print(indent, '({0}) already exists, removing file...'.format(file_path))
         os.remove(file_path)
 
-def create_symlinks(files):
-    for pair in files:
-        pair = FilePair(*pair)
-
+def create_symlinks(pairs: typing.List[FilePair]):
+    for pair in pairs:
         create_destination_parent(pair)
 
         destination_file = pair.destination / pair.source.name
@@ -80,22 +86,18 @@ def create_symlinks(files):
         os.symlink(pair.source, destination_file)
         print(indent, 'Created symlink ({0}) -> ({1})'.format(pair.source, destination_file))
 
-def verify_symlinks(files):
-    for pair in files:
-        if len(pair) != 2:
-            raise InvalidPairError('not enough or too many items', pair)
-        elif not Path(pair[0]).exists():
-            raise InvalidPairError('source location does not exist', pair)
+def verify_symlinks(pairs: typing.List[FilePair]):
+    for pair in pairs:
+        pair.verify()
+        print(indent, f'Verified ({pair.source}) -> ({pair.destination})')
 
-        print(indent, f'Verified ({pair[0]}) -> ({pair[1]})')
-
-def link_files(file_type, files):
+def link_files(file_type: str, pairs: typing.Tuple[FilePair]):
     print(f'Verifying {file_type} file symlinks...')
-    verify_symlinks(files)
+    verify_symlinks(pairs)
     print(f'Finished verifying {file_type} file symlinks.', end='\n\n')
 
     print(f'Creating {file_type} file symlinks...')
-    create_symlinks(files)
+    create_symlinks(pairs)
     print(f'Finished creating {file_type} file symlinks.', end='\n\n')
 
 def main():
