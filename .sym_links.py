@@ -40,7 +40,7 @@ config_files = (
 # bin files
 # (source, destination)
 bin_files = (
-    (f'{bin_src}/trash', bin_dest),
+    (bin_src / 'trash', bin_dest),
 )
 
 class InvalidPairError(Exception):
