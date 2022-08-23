@@ -71,7 +71,7 @@ def replace_destination_file(file_path: Path):
     print(indent, '({0}) already exists, {1}moving file...'.format(file_path, '' if safe_mode else 're'))
 
     if safe_mode:
-        os.rename(file_path, dup_dest / file_path.name)s
+        os.rename(file_path, dup_dest / file_path.name)
     else:
         os.remove(file_path)
 
