@@ -13,11 +13,15 @@ class FilePair:
         self.destination = Path(destination)
 
     def verify(self):
-        if not Path(source).exists():
+        if not Path(repository).exists():
             raise InvalidPairError('source location does not exist', self)
 
     def __str__(self):
         return f'FilePair {{ Source: ({self.source}) Destination: ({self.destination}) }}'
+
+#
+# Script Adjustments
+#
 
 # safe mode
 safe_mode = True
@@ -26,35 +30,32 @@ safe_mode = True
 indent = '  '
 
 # path variables
-user_home   = Path.home()
-dup_dest    = user_home / '.sym_links_duplicates'
-source      = user_home / 'Repos/dotfiles'
-config_dest = user_home / '.config'
-config_src  = source    / '.config'
-bin_dest    = user_home / '.bin'
-bin_src     = source    / '.bin'
+user_home  = Path.home()
+duplicates = user_home / '.sym_links_duplicates'
+repository = user_home / 'Repos/dotfiles'
 
-# rc files
-# (source, destination)
+config = FilePair(repository / '.config', user_home / '.config') 
+bin    = FilePair(repository / '.bin',    user_home / '.bin')
+
 rc_files = (
-    FilePair(source / '.bashrc',  user_home),
-    FilePair(source / '.zshrc',   user_home),
-    FilePair(source / '.vimrc',   user_home),
-    FilePair(source / '.inputrc', user_home),
+    FilePair(repository / '.bashrc',  user_home),
+    FilePair(repository / '.zshrc',   user_home),
+    FilePair(repository / '.vimrc',   user_home),
+    FilePair(repository / '.inputrc', user_home),
 )
 
-# config files
-# (source, destination)
 config_files = (
-    FilePair(config_src / 'kitty/kitty.conf', config_dest / 'kitty'),
-    FilePair(source / '.sh_aliases',          user_home),
+    FilePair(config.source / 'kitty/kitty.conf', config.destination / 'kitty'),
+    FilePair(repository / '.sh_aliases',         user_home),
 )
 
-# bin files
-# (source, destination)
 bin_files = (
-    FilePair(bin_src / 'trash', bin_dest),
+    FilePair(bin.source / 'trash', bin.destination),
 )
+
+#
+#
+#
 
 class InvalidPairError(Exception):
     def __init__(self, reason, pair):
@@ -71,7 +72,7 @@ def replace_destination_file(file_path: Path):
     print(indent, '({0}) already exists, {1}moving file...'.format(file_path, '' if safe_mode else 're'))
 
     if safe_mode:
-        os.rename(file_path, dup_dest / file_path.name)
+        os.rename(file_path, duplicates / file_path.name)
     else:
         os.remove(file_path)
 
@@ -102,7 +103,7 @@ def link_files(file_type: str, pairs: typing.Tuple[FilePair]):
 
 def main():
     if safe_mode:
-        os.makedirs(dup_dest, exist_ok=True)
+        os.makedirs(duplicates, exist_ok=True)
 
     try:
         link_files('rc',     rc_files)
