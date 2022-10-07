@@ -6,6 +6,7 @@
 from pathlib import Path
 import logging as logger
 import typing
+import sys
 import os
 
 class FilePair:
@@ -29,8 +30,12 @@ class InvalidPairError(Exception):
 # Script Adjustments
 #
 
-# set logging configuration
-logger.basicConfig(level=logger.INFO, format='%(message)s')
+# logging configuration
+debug_flag = sys.argv[1]
+if debug_flag.lower() == 'debug':
+    logger.basicConfig(level=logger.DEBUG, format='[%(levelname)s] %(message)s')
+else:
+    logger.basicConfig(level=logger.INFO, format='%(message)s')
 
 # safe mode
 safe_mode = True
