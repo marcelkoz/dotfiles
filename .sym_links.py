@@ -68,7 +68,7 @@ bin_files = (
 
 def create_destination_parent(pair: FilePair):
     logger.debug(f'{indent}Ensuring ({pair.destination}) has a valid symlink destination...')
-    parent = pair.destination.parent.resolve()
+    parent = pair.destination.resolve()
     if not parent.exists():
         os.makedirs(parent, exist_ok=True)
 
@@ -111,6 +111,7 @@ def main():
         link_files('rc',     rc_files)
         link_files('config', config_files)
         link_files('bin',    bin_files)
+        logger.info('\nSymlink creation complete.')
     except InvalidPairError as err:
         logger.error(f'{indent}Failed to verify pair, {err}: {err.pair}') 
 
