@@ -73,9 +73,9 @@ bin_files = (
 
 def create_destination_parent(pair: FilePair):
     logger.debug(f'{indent}Ensuring ({pair.destination}) has a valid symlink destination...')
-    parent = pair.destination.resolve()
-    if not parent.exists():
-        os.makedirs(parent, exist_ok=True)
+    destination = pair.destination.resolve()
+    if not destination.exists():
+        os.makedirs(destination, exist_ok=True)
 
 def replace_destination_file(file_path: Path):
     logger.debug('{2}({0}) already exists, {1}moving file...'.format(file_path, '' if safe_mode else 're', indent))
