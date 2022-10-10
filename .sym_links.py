@@ -11,11 +11,13 @@ import os
 
 class FilePair:
     def __init__(self, source, destination):
-        self.source      = Path(source)
-        self.destination = Path(destination)
+        self.source           = Path(source)
+        self.destination      = Path(destination)
+        self.destination_file = destination / source.name
 
     def verify(self):
-        pass
+        if not self.source.exists():
+            raise InvalidPairError('source path does not exist', self)
 
     def __str__(self):
         return f'FilePair {{ Source: ({self.source}) Destination: ({self.destination}) }}'
@@ -70,8 +72,8 @@ bin_files = (
 #
 #
 
-def create_destination_parent(pair: FilePair):
-    logger.debug(f'{indent}Ensuring ({pair.destination}) has a valid symlink destination...')
+def create_destination_location(pair: FilePair):
+    logger.debug(f'{indent}Ensuring ({pair.destination}) is a valid symlink destination...')
     destination = pair.destination.resolve()
     if not destination.exists():
         os.makedirs(destination, exist_ok=True)
@@ -84,16 +86,18 @@ def replace_destination_file(file_path: Path):
     else:
         os.remove(file_path)
 
+def handle_destination(pair: FilePair):
+    create_destination_location(pair)
+
+    if pair.destination_file.exists():
+        replace_destination_file(pair.destination_file)
+
 def create_symlinks(pairs: typing.List[FilePair]):
     for pair in pairs:
-        create_destination_parent(pair)
+        handle_destination(pair)
 
-        destination_file = pair.destination / pair.source.name
-        if destination_file.exists():
-            replace_destination_file(destination_file)    
-
-        os.symlink(pair.source, destination_file)
-        logger.info(f'{indent}Created symlink ({pair.source}) -> ({destination_file})')
+        os.symlink(pair.source, pair.destination_file)
+        logger.info(f'{indent}Created symlink ({pair.source}) -> ({pair.destination_file})')
 
 def verify_symlinks(pairs: typing.List[FilePair]):
     for pair in pairs:
