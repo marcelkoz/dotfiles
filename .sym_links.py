@@ -15,8 +15,7 @@ class FilePair:
         self.destination = Path(destination)
 
     def verify(self):
-        if not Path(repository).exists():
-            raise InvalidPairError('repository location does not exist', self)
+        pass
 
     def __str__(self):
         return f'FilePair {{ Source: ({self.source}) Destination: ({self.destination}) }}'
@@ -108,17 +107,24 @@ def link_files(file_type: str, pairs: typing.Tuple[FilePair]):
     logger.info(f'\nCreating {file_type} file symlinks...')
     create_symlinks(pairs)
 
+def verify_repository():
+    if not repository.exists():
+        logger.error(f'Repository ({repository}) does not exist')
+        exit(1)
+
 def main():
     if safe_mode:
         os.makedirs(duplicates, exist_ok=True)
 
     try:
+        verify_repository()
         link_files('rc',     rc_files)
         link_files('config', config_files)
         link_files('bin',    bin_files)
         logger.info('\nSymlink creation complete.')
     except InvalidPairError as err:
-        logger.error(f'{indent}Failed to verify pair, {err}: {err.pair}') 
+        logger.error(f'{indent}Failed to verify pair, {err}: {err.pair}')
+        exit(1)
 
 if __name__ == '__main__':
     main()
