@@ -10,7 +10,9 @@
 #
 
 # tput requires $TERM set
+# if run from a terminal
 DISPLAY_FORMATTING=$TERM
+
 if [[ $DISPLAY_FORMATTING ]]
 then
     magenta=$(tput setaf 5)
@@ -25,6 +27,31 @@ then
     # modifiers
     reset=$(tput sgr0)
     bold=$(tput bold)
+fi
+
+#
+# Less & Man Pages
+#
+
+if [[ $DISPLAY_FORMATTING ]]
+then
+    # coloured less and man pages
+    # begin bold
+    export LESS_TERMCAP_mb="$bold"
+    # begin blink
+    export LESS_TERMCAP_md="$bold$yellow"
+    # begin reverse video
+    export LESS_TERMCAP_so="$bold$magenta"
+    # begin underline
+    export LESS_TERMCAP_us="$bold"
+    # reset bold & blink
+    export LESS_TERMCAP_me="$reset"
+    # reset reverse video
+    export LESS_TERMCAP_se="$(tput rmso)$reset"
+    # reset underline
+    export LESS_TERMCAP_ue="$(tput rmul)$reset"
+    # for some terminal applications
+    export GROFF_NO_SGR=1
 fi
 
 #
@@ -65,31 +92,6 @@ PS1="\[$green\]\u\[$reset\]@\[$green\]\h\[$reset\] \[$bold\]\[$cyan\]\w\[$reset\
 PS2='> '
 
 #
-# Less & Man Pages
-#
-
-if [[ $DISPLAY_FORMATTING ]]
-then
-    # coloured less and man pages
-    # begin bold
-    export LESS_TERMCAP_mb="$bold"
-    # begin blink
-    export LESS_TERMCAP_md="$bold$yellow"
-    # begin reverse video
-    export LESS_TERMCAP_so="$bold$magenta"
-    # begin underline
-    export LESS_TERMCAP_us="$bold"
-    # reset bold & blink
-    export LESS_TERMCAP_me="$reset"
-    # reset reverse video
-    export LESS_TERMCAP_se="$(tput rmso)$reset"
-    # reset underline
-    export LESS_TERMCAP_ue="$(tput rmul)$reset"
-    # for some terminal applications
-    export GROFF_NO_SGR=1
-fi
-
-#
 # Bash History
 #
 
@@ -106,9 +108,6 @@ shopt -s histappend
 #
 # Misc
 #
-
-# add user .bin to path
-export PATH="$HOME/.bin:$PATH"
 
 # load command aliases
 source_file "$HOME/.sh_aliases"

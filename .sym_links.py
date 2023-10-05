@@ -10,10 +10,17 @@ import sys
 import os
 
 class FilePair:
-    def __init__(self, source, destination):
-        self.source           = Path(source)
-        self.destination      = Path(destination)
-        self.destination_file = destination / source.name
+    def __init__(self, source, destination, old_api=False):
+        destination = Path(destination)
+        self.source = Path(source)
+
+        if old_api:
+            self.destination      = destination
+            self.destination_file = destination / source.name
+        # in new api, the destination file is explicit, not implied from source name
+        else:
+            self.destination      = destination.parent
+            self.destination_file = destination
 
     def verify(self):
         if not self.source.exists():
@@ -32,8 +39,7 @@ class InvalidPairError(Exception):
 #
 
 # logging configuration
-debug_flag = sys.argv[1]
-if debug_flag.lower() == 'debug':
+if len(sys.argv) > 1 and sys.argv[1].lower() == 'debug':
     logger.basicConfig(level=logger.DEBUG, format='[%(levelname)s] %(message)s')
 else:
     logger.basicConfig(level=logger.INFO, format='%(message)s')
@@ -49,24 +55,24 @@ user_home  = Path.home()
 duplicates = user_home / '.sym_links_duplicates'
 repository = user_home / 'Repos/dotfiles'
 
-config = FilePair(repository / '.config', user_home / '.config') 
-bin    = FilePair(repository / '.bin',    user_home / '.bin')
+config = FilePair(repository / '.config',    user_home / '.config', old_api=True) 
+bin    = FilePair(repository / '.local/bin', user_home / '.local/bin', old_api=True)
 
 rc_files = (
-    FilePair(repository / '.bashrc',  user_home),
-    FilePair(repository / '.zshrc',   user_home),
-    FilePair(repository / '.vimrc',   user_home),
-    FilePair(repository / '.inputrc', user_home),
+    FilePair(repository / '.bashrc',  user_home / '.bashrc'),
+    FilePair(repository / '.zshrc',   user_home / '.zshrc'),
+    FilePair(repository / '.vimrc',   user_home / '.vimrc'),
+    FilePair(repository / '.inputrc', user_home / '.inputrc'),
 )
 
 config_files = (
-    FilePair(config.source / 'kitty/kitty.conf', config.destination / 'kitty'),
-    FilePair(repository / '.sh_aliases',         user_home),
+    FilePair(config.source / 'kitty/kitty.conf', config.destination / 'kitty/kitty.conf'),
+    FilePair(repository / '.sh_aliases',         user_home / '.sh_aliases'),
+    FilePair(repository / '.sh_profile',         user_home / '.profile'),
+    FilePair(repository / '.sh_profile',         user_home / '.zprofile'),
 )
 
-bin_files = (
-    FilePair(bin.source / 'trash', bin.destination),
-)
+bin_files = ()
 
 #
 #

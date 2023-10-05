@@ -1,0 +1,22 @@
+#
+# Custom ~/.profile
+# Custom ~/.zprofile
+#
+# Shell login profiles for bash and zsh.
+# Place extensions to PATH and new global variables here.
+#
+
+source '/etc/profile'
+
+# (From arch linux, /etc/profile)
+# $1: path to append to $PATH when not already in
+append_path() {
+    case ":$PATH:" in
+        *:"$1":*)
+            ;;
+        *)
+            PATH="${PATH:+$PATH:}$1"
+    esac
+}
+
+append_path "$HOME/.local/bin"
