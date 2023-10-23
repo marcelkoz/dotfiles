@@ -19,4 +19,8 @@ append_path() {
     esac
 }
 
+# PATH
 append_path "$HOME/.local/bin"
+
+# global variables
+export EDITOR=vim

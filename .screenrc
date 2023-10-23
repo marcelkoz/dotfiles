@@ -1,0 +1,42 @@
+#
+# Custom ~/.screenrc
+#
+
+# enable scrolling
+termcapinfo xterm* ti@:ti@
+defscrollback 10000
+
+# disable welcome message and visual bell
+startup_message off
+vbell off
+
+altscreen on
+term screen-256color
+
+
+# custom status line
+hardstatus alwayslastline
+hardstatus string '%{= kG}[ %{G}%H %{g}][%= %{= kw}%?%-Lw%?%{r}(%{W}%n*%f%t%?(%u)%?%{r})%{w}%?%+Lw%?%?%= %{g}][%{B} %m-%d %{W}%c %{g}]'
+
+#
+# Keybinds
+#
+
+# R key to reload .screenrc
+bind R eval "source $HOME/.screenrc" "echo '.screenrc reloaded'"
+
+# n key to create a new window
+bindkey n screen
+
+# q key to destroy current window
+bindkey q kill
+
+# t key to change window title
+bindkey t title
+
+# w key to select an active window
+bindkey w windowlist -b
+
+# left + right arrow keys to switch windows
+bindkey "^[[1;5D" prev
+bindkey "^[[1;5C" next

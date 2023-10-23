@@ -63,6 +63,7 @@ rc_files = (
     FilePair(repository / '.zshrc',   user_home / '.zshrc'),
     FilePair(repository / '.vimrc',   user_home / '.vimrc'),
     FilePair(repository / '.inputrc', user_home / '.inputrc'),
+    FilePair(repository / '.screenrc', user_home / '.screenrc'),
 )
 
 config_files = (
