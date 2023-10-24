@@ -109,6 +109,9 @@ shopt -s histappend
 # Misc
 #
 
+# load environment
+source_file "$HOME/.bashenv"
+
 # load command aliases
 source_file "$HOME/.sh_aliases"
 

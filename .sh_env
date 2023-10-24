@@ -1,12 +1,14 @@
 #
-# Custom ~/.profile
-# Custom ~/.zprofile
+# Custom ~/.bashenv
+# Custom ~/.zshenv
 #
-# Shell login profiles for bash and zsh.
-# Place extensions to PATH and new global variables here.
+# Setup environment for bash and zsh:
+# - PATH
+# - Global variables
+# - Global functions
 #
 
-source '/etc/profile'
+# functions
 
 # (From arch linux, /etc/profile)
 # $1: path to append to $PATH when not already in
@@ -19,8 +21,9 @@ append_path() {
     esac
 }
 
-# PATH
+# path
 append_path "$HOME/.local/bin"
 
-# global variables
+# variables
 export EDITOR=vim
+

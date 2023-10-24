@@ -14,3 +14,5 @@ alias la='ls -A'
 alias l='ls'
 
 alias svim='sudo vim'
+
+alias show_path='echo "$PATH" | tr : "\n" | nl -s "  " -w 3'

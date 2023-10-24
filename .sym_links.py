@@ -69,8 +69,8 @@ rc_files = (
 config_files = (
     FilePair(config.source / 'kitty/kitty.conf', config.destination / 'kitty/kitty.conf'),
     FilePair(repository / '.sh_aliases',         user_home / '.sh_aliases'),
-    FilePair(repository / '.sh_profile',         user_home / '.profile'),
-    FilePair(repository / '.sh_profile',         user_home / '.zprofile'),
+    FilePair(repository / '.sh_env',             user_home / '.bashenv'),
+    FilePair(repository / '.sh_env',             user_home / '.zshenv'),
 )
 
 bin_files = ()
