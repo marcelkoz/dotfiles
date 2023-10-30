@@ -66,6 +66,9 @@ HISTSIZE=2000
 # Misc
 #
 
+# crtl + r to search history
+bindkey '^R' history-incremental-search-backward
+
 # load command aliases
 source_file "$HOME/.sh_aliases"
 
