@@ -16,3 +16,5 @@ alias l='ls'
 alias svim='sudo vim'
 
 alias show_path='echo "$PATH" | tr : "\n" | nl -s "  " -w 3'
+alias sort_ips='sort -t . -n -k 1,1'
+
