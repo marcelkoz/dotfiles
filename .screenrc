@@ -31,10 +31,13 @@ bind R eval "source $HOME/.screenrc" "echo '.screenrc reloaded'"
 bind w screen
 
 # destroy current window
-bind k kill
+bind q kill
 
 # change window title
 bind t title
+
+# detach the session
+bind d detach
 
 # space key to select an active window
 bind ' ' windowlist -b
