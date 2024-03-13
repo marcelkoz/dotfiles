@@ -24,6 +24,9 @@ append_path() {
 # path
 append_path "$HOME/.local/bin"
 
+# add local man pages
+MANPATH="$MANPATH:$HOME/.local/share/man"
+
 # variables
 export EDITOR=vim
 
