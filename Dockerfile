@@ -1,6 +1,6 @@
-FROM python:3.6-slim
+FROM python:3.10-slim
 
 WORKDIR /root/Repos/dotfiles
 COPY . ./
 
-RUN ["python", ".sym_links.py", "debug"]
+RUN ["python", "dotfiles.py", "-dsm", "."]
