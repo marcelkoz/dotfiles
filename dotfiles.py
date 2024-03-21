@@ -39,7 +39,9 @@ class Config:
             FilePair(self.repository_path / '.sh_env',        home_path / '.zshenv'),
         )
 
-        self.bin_files = ()
+        self.bin_files = (
+            FilePair(bin_path.source / 'screen-kill.sh', bin_path.destination / 'screen-kill.sh'),
+        )
         self.safe_mode_path = home_path / '.found_dotfiles'
 
 class Colour:
