@@ -110,6 +110,11 @@ def create_symlinks(name: str, file_pairs: tuple[FilePair], config: Config, logg
             
             # broken symlinks show up as non-existant
             if exists(pair.destination):
+                if pair.destination.is_symlink() and pair.destination.readlink() == pair.source.absolute():
+                    tag = logger.colour(Colour.Yellow, '(Skip)')
+                    logger.info(f'{tag} Valid symlink already exists', indent=True)
+                    continue
+
                 if config.safe_mode:
                     safe_space = config.safe_mode_path / pair.destination.name
                     tag = logger.colour(Colour.Yellow, '(Safe Mode)')
@@ -117,6 +122,9 @@ def create_symlinks(name: str, file_pairs: tuple[FilePair], config: Config, logg
                     os.rename(pair.destination, safe_space)
                 else:
                     os.remove(pair.destination)
+
+            if not pair.destination.parent.exists():
+                pair.destination.parent.mkdir(parents=True)
 
             os.symlink(pair.source.absolute(), pair.destination)
         except FileNotFoundError:
